@@ -24,16 +24,25 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x gradlew
 
-    - name: Generate Key & Build Signed Release APK
+    - name: Build Unsigned Release APK
+      run: ./gradlew assembleRelease --no-daemon
+
+    - name: Generate Certificate & Sign APK
       run: |
-        # ১. সার্টিফিকেট/কি-স্টোর ফাইল তৈরি
+        # ১. ডিজিটাল সার্টিফিকেট (Keystore) তৈরি
         keytool -genkey -v -keystore release.keystore -alias ftvtv_key -keyalg RSA -keysize 2048 -validity 10000 -storepass 12345678 -keypass 12345678 -dname "CN=Sayful Islam, OU=FTV, O=FTV, L=Dhaka, C=BD"
         
-        # ২. সাইন্ড রিলিজ বিল্ড চালানো
-        ./gradlew assembleRelease -Pandroid.injected.signing.store.file=$(pwd)/release.keystore -Pandroid.injected.signing.store.password=12345678 -Pandroid.injected.signing.key.alias=ftvtv_key -Pandroid.injected.signing.key.password=12345678 --no-daemon
+        # ২. অ্যান্ড্রয়েড বিল্ড টুলস থেকে apksigner দিয়ে অ্যাপ সাইন করা
+        BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
+        
+        # Unsigned APK খুঁজে বের করে সাইন করা
+        UNSIGNED_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+        SIGNED_APK="app/build/outputs/apk/release/FTV-TV-Signed.apk"
+        
+        $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:12345678 --ks-key-alias ftvtv_key --key-pass pass:12345678 --out $SIGNED_APK $UNSIGNED_APK
 
     - name: Upload Signed APK
       uses: actions/upload-artifact@v3
       with:
         name: FTV-TV-Signed-APK
-        path: app/build/outputs/apk/release/*.apk
+        path: app/build/outputs/apk/release/FTV-TV-Signed.apk
