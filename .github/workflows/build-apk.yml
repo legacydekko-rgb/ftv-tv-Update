@@ -21,20 +21,37 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
-    - name: Build Unsigned Release APK
-      run: gradle assembleRelease --no-daemon
+    - name: Find Project Directory & Build
+      run: |
+        # প্রজেক্টের আসল ফোল্ডার খুঁজে বের করা
+        PROJECT_DIR=$(find . -name "settings.gradle" -o -name "settings.gradle.kts" | head -n 1 | xargs dirname)
+        echo "Found project directory at: $PROJECT_DIR"
+        cd $PROJECT_DIR
+        
+        # বিল্ড চালানো
+        if [ -f "./gradlew" ]; then
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+        else
+          gradle assembleRelease --no-daemon
+        fi
+        
+        # জেনারেট হওয়া APK রুট লেভেলে কপি করা
+        mkdir -p $GITHUB_WORKSPACE/build_output
+        cp app/build/outputs/apk/release/*.apk $GITHUB_WORKSPACE/build_output/
 
     - name: Generate Certificate & Sign APK
       run: |
+        cd $GITHUB_WORKSPACE/build_output
+        
         # ১. ডিজিটাল সার্টিফিকেট (Keystore) তৈরি
         keytool -genkey -v -keystore release.keystore -alias ftvtv_key -keyalg RSA -keysize 2048 -validity 10000 -storepass 12345678 -keypass 12345678 -dname "CN=Sayful Islam, OU=FTV, O=FTV, L=Dhaka, C=BD"
         
-        # ২. অ্যান্ড্রয়েড বিল্ড টুলস থেকে apksigner দিয়ে অ্যাপ সাইন করা
+        # ২. apksigner দিয়ে অ্যাপ সাইন করা
         BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
         
-        # Unsigned APK খুঁজে বের করে সাইন করা
-        UNSIGNED_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
-        SIGNED_APK="app/build/outputs/apk/release/FTV-TV-Signed.apk"
+        UNSIGNED_APK=$(ls *.apk | head -n 1)
+        SIGNED_APK="FTV-TV-Signed.apk"
         
         $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:12345678 --ks-key-alias ftvtv_key --key-pass pass:12345678 --out $SIGNED_APK $UNSIGNED_APK
 
@@ -42,4 +59,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: FTV-TV-Signed-APK
-        path: app/build/outputs/apk/release/FTV-TV-Signed.apk
+        path: build_output/FTV-TV-Signed.apk
