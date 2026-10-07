@@ -1,0 +1,133 @@
+# ============================================================================
+# FILE: .github/workflows/build-apk.yml
+# ============================================================================
+# Builds the FTV TV APK on GitHub's servers and gives you a download link.
+#
+# You do NOT need Android Studio, Java, or any developer tools on your own
+# computer. GitHub does all the compiling.
+#
+# HOW TO USE (full walkthrough in BUILD-APK.md):
+#   1. Put this whole project on GitHub (upload the files / drag the ZIP
+#      contents into a new repository).
+#   2. Go to the repository's "Actions" tab.
+#   3. Click "Build FTV TV APK" on the left, then "Run workflow".
+#   4. Wait 3-6 minutes.
+#   5. Open the finished run and download the "FTV-TV-debug-apk" artifact.
+#      That artifact is a ZIP containing app-debug.apk - that is your APK.
+#
+# The workflow also runs automatically on every push, so you get a fresh APK
+# whenever you change the code (for example, to add your own servers).
+# ============================================================================
+
+name: Build FTV TV APK
+
+on:
+  # Manual "Run workflow" button in the Actions tab.
+  workflow_dispatch:
+
+  # Rebuild automatically whenever the project files change.
+  push:
+    branches: ['**']
+    paths:
+      - 'android/**'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - 'src/**'
+      - '.github/workflows/build-apk.yml'
+
+# Only one build at a time per branch; a newer push cancels the older run.
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Assemble debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ---------------------------------------------------------------- 1/6
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # ---------------------------------------------------------------- 2/6
+      # The project is supplied as an `android/` folder, but Gradle needs the
+      # sources at the build root. If the repository root has no build.gradle
+      # yet an android/ folder does, promote android/ to the root so that
+      # src/main/AndroidManifest.xml is where Gradle expects it.
+      # If you already uploaded the CONTENTS of android/ to the root, this
+      # step simply does nothing.
+      - name: Normalise project layout
+        run: |
+          set -e
+          if [ ! -f "build.gradle" ] && [ -f "android/build.gradle" ]; then
+            echo "::notice::Found android/ subfolder - promoting it to the repository root."
+            cp -R android/. .
+          fi
+          echo "--- build.gradle present? ---"
+          ls -la build.gradle settings.gradle gradle.properties 2>&1 || true
+          echo "--- manifest location ---"
+          find . -name AndroidManifest.xml -not -path './.git/*' 2>/dev/null || true
+
+      # ---------------------------------------------------------------- 3/6
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # ---------------------------------------------------------------- 4/6
+      # Installs a known-good Gradle. AGP 8.2.2 requires Gradle 8.2 or newer.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.5'
+
+      # ---------------------------------------------------------------- 5/6
+      - name: Build debug APK
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      # ---------------------------------------------------------------- 6/6
+      - name: Collect APK and build info
+        run: |
+          set -e
+          mkdir -p artifact
+          echo "--- APKs produced ---"
+          find . -name '*.apk' -not -path './.git/*' -print
+
+          # Copy every debug APK we produced into one folder.
+          found=0
+          while IFS= read -r apk; do
+            cp "$apk" "artifact/$(basename "$apk")"
+            found=1
+          done < <(find . -name '*-debug.apk' -not -path './.git/*')
+
+          if [ "$found" -eq 0 ]; then
+            echo "::error::No debug APK was produced. Scroll up to the 'Build debug APK' step for the real error."
+            exit 1
+          fi
+
+          {
+            echo "FTV TV - debug APK"
+            echo "=================="
+            echo "Commit:  $GITHUB_SHA"
+            echo "Built:   $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo ""
+            echo "Install on the TV with:"
+            echo "  adb connect <TV-IP>:5555"
+            echo "  adb install -r app-debug.apk"
+            echo ""
+            echo "Or copy app-debug.apk to a USB stick and open it on the TV."
+          } > artifact/INSTALL.txt
+
+          ls -la artifact/
+
+      - name: Upload the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FTV-TV-debug-apk
+          path: artifact/
+          if-no-files-found: error
+          retention-days: 90
