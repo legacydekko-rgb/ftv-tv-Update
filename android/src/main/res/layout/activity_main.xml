@@ -74,6 +74,17 @@
                         android:text="@string/dashboard_subtitle"
                         android:textColor="#8B96A8"
                         android:textSize="14sp" />
+
+                    <!-- ============ DEVELOPER INFO ============ -->
+                    <TextView
+                        android:id="@+id/developer_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Developed by: Sayful Islam | Contact: 01676714139"
+                        android:textColor="#38BDF8"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <TextView
@@ -113,11 +124,4 @@
                 android:id="@+id/dpad_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:gravity="center"
-                android:text="@string/dpad_hint"
-                android:textColor="#5C6675"
-                android:textSize="13sp" />
-        </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+                android:layout_marginTop
