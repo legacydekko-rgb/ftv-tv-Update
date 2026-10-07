@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  FILE:  app/src/main/res/xml/network_security_config.xml
+  ============================================================================
+  Your servers are plain HTTP (circleftp.net, 172.16.50.14, ...).
+  Since Android 9 (API 28) cleartext HTTP is blocked by default, so we must
+  explicitly allow it or the WebView will fail with ERR_CLEARTEXT_NOT_PERMITTED.
+
+  Two ways to allow it:
+    A) android:usesCleartextTraffic="true" in the manifest  (done - simplest)
+    B) this file, which allows cleartext ONLY for the hosts you list
+  Both are present. Option B is what you want for a Play Store release, because
+  it lets you keep cleartext disabled for everything else.
+
+  Add every server host you use to the list below.
+  ============================================================================
+-->
+<network-security-config>
+
+    <!-- Default: still allow cleartext, because the server list is user-editable.
+         Tighten this to cleartextTrafficPermitted="false" for a stricter build
+         and rely only on the per-domain rules below. -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Explicit allow-list of the cleartext hosts this app talks to -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">circleftp.net</domain>
+        <domain includeSubdomains="true">172.16.50.14</domain>
+        <domain includeSubdomains="true">10.16.100.244</domain>
+        <domain includeSubdomains="true">crazyctg.com</domain>
+        <domain includeSubdomains="true">khulnaplex.net</domain>
+    </domain-config>
+</network-security-config>

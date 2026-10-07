@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  FILE:  app/src/main/res/values/colors.xml
+  ============================================================================
+-->
+<resources>
+    <color name="app_background">#0B0F14</color>
+    <color name="app_surface">#141A24</color>
+    <color name="app_surface_stroke">#2A3342</color>
+    <color name="app_accent">#2563EB</color>
+    <color name="app_focus">#FF0000</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#8B96A8</color>
+    <color name="text_muted">#5C6675</color>
+</resources>

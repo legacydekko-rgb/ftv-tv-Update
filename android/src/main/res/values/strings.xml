@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  FILE:  app/src/main/res/values/strings.xml
+  ============================================================================
+-->
+<resources>
+    <string name="app_name">FTV TV</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Choose a Server</string>
+    <string name="dashboard_subtitle">Movies &amp; Series directory browser for Android TV</string>
+    <string name="resume_hint">Resume: %1$s  (hold OK to clear)</string>
+    <string name="resume_hint_placeholder">Resume</string>
+    <string name="dpad_hint">Use the remote: ▲ ▼ ◀ ▶ to move  •  OK / Center to open  •  BACK to return</string>
+
+    <!-- WebView -->
+    <string name="webview_header_hint">OK = open  •  MENU = options  •  BACK = up one folder</string>
+    <string name="error_title">Cannot reach this server</string>
+    <string name="error_retry">Retry</string>
+    <string name="error_home">Server list</string>
+
+    <!-- Exit confirmation -->
+    <string name="exit_title">Exit FTV TV?</string>
+    <string name="exit_message">You are on the server list. Press Yes to close the app.</string>
+    <string name="exit_yes">Yes, exit</string>
+    <string name="exit_no">Stay</string>
+
+    <!-- Player -->
+    <string name="player_error_title">Cannot play this file in-app</string>
+    <string name="player_open_external">Open in VLC / MX Player</string>
+</resources>

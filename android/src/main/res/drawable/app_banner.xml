@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  FILE:  app/src/main/res/drawable/app_banner.xml
+  ============================================================================
+  ANDROID TV HOME-SCREEN BANNER.
+  Google's requirement is a 320x180 dp banner (xhdpi: 320x180 px image).
+  A VectorDrawable is accepted for android:banner, which keeps the project
+  text-only and AIDE-friendly.
+
+  If you want a designed graphic instead:
+    1. Export a 320x180 PNG (e.g. from Figma/Canva) named app_banner.png
+    2. Put it in  app/src/main/res/drawable-xhdpi/app_banner.png
+    3. Delete this XML file - the manifest reference stays the same.
+  ============================================================================
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <!-- Background gradient -->
+    <path android:pathData="M0,0 L320,0 L320,180 L0,180 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="320"
+                android:endY="180"
+                android:type="linear">
+                <item android:offset="0" android:color="#FF0B1220" />
+                <item android:offset="1" android:color="#FF1E2A4A" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Accent bar on the left -->
+    <path
+        android:fillColor="#FF2563EB"
+        android:pathData="M0,0 L14,0 L14,180 L0,180 Z" />
+
+    <!-- Play badge -->
+    <path
+        android:fillColor="#FF2563EB"
+        android:pathData="M48,52 A34,34 0 1 1 47.9,52 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M62,66 L62,106 L96,86 Z" />
+
+    <!-- Three "title" bars standing in for the app name typography -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M120,62 L286,62 L286,78 L120,78 Z" />
+    <path
+        android:fillColor="#FF8B96A8"
+        android:pathData="M120,88 L250,88 L250,98 L120,98 Z" />
+
+    <!-- Red highlight underline -->
+    <path
+        android:fillColor="#FFFF0000"
+        android:pathData="M120,112 L200,112 L200,118 L120,118 Z" />
+
+    <!-- Directory rows, suggesting the file-listing browser -->
+    <path
+        android:fillColor="#FF3B4763"
+        android:pathData="M120,132 L286,132 L286,140 L120,140 Z" />
+    <path
+        android:fillColor="#FF3B4763"
+        android:pathData="M120,148 L262,148 L262,156 L120,156 Z" />
+</vector>
