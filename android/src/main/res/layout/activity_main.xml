@@ -124,4 +124,11 @@
                 android:id="@+id/dpad_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:text="@string/dpad_hint"
+                android:textColor="#5C6675"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
