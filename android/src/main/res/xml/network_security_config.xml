@@ -1,38 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ============================================================================
-  FILE:  app/src/main/res/xml/network_security_config.xml
-  ============================================================================
-  Your servers are plain HTTP (circleftp.net, 172.16.50.14, ...).
-  Since Android 9 (API 28) cleartext HTTP is blocked by default, so we must
-  explicitly allow it or the WebView will fail with ERR_CLEARTEXT_NOT_PERMITTED.
-
-  Two ways to allow it:
-    A) android:usesCleartextTraffic="true" in the manifest  (done - simplest)
-    B) this file, which allows cleartext ONLY for the hosts you list
-  Both are present. Option B is what you want for a Play Store release, because
-  it lets you keep cleartext disabled for everything else.
-
-  Add every server host you use to the list below.
-  ============================================================================
--->
 <network-security-config>
-
-    <!-- Default: still allow cleartext, because the server list is user-editable.
-         Tighten this to cleartextTrafficPermitted="false" for a stricter build
-         and rely only on the per-domain rules below. -->
+    <!-- Allow plain HTTP (non-HTTPS) traffic globally for all LAN & BDIX domains -->
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
     </base-config>
 
-    <!-- Explicit allow-list of the cleartext hosts this app talks to -->
     <domain-config cleartextTrafficPermitted="true">
+        <!-- BDIX Domain Whitelist -->
+        <domain includeSubdomains="true">ftpbd.net</domain>
         <domain includeSubdomains="true">circleftp.net</domain>
-        <domain includeSubdomains="true">172.16.50.14</domain>
-        <domain includeSubdomains="true">10.16.100.244</domain>
+        <domain includeSubdomains="true">samftp.com</domain>
+        <domain includeSubdomains="true">sambd.net</domain>
+        <domain includeSubdomains="true">khulnaflix.net</domain>
+        <domain includeSubdomains="true">bokasoka.net</domain>
+        <domain includeSubdomains="true">discoveryftp.net</domain>
+        <domain includeSubdomains="true">showtimebd.com</domain>
+        <domain includeSubdomains="true">ctgmovies.com</domain>
         <domain includeSubdomains="true">crazyctg.com</domain>
+        <domain includeSubdomains="true">ebox.live</domain>
+        <domain includeSubdomains="true">dhakamovie.com</domain>
+        <domain includeSubdomains="true">naturalbd.com</domain>
+        <domain includeSubdomains="true">timepassbd.live</domain>
+        <domain includeSubdomains="true">nagordola.com.bd</domain>
+        <domain includeSubdomains="true">elaach.com</domain>
+        <domain includeSubdomains="true">uniquedownloadbd.com</domain>
+        <domain includeSubdomains="true">mojaloss.stream</domain>
+        <domain includeSubdomains="true">fnfonlinebd.com</domain>
+        <domain includeSubdomains="true">ihub.live</domain>
+        <domain includeSubdomains="true">smartflix.digital</domain>
+        <domain includeSubdomains="true">c1movies.com</domain>
+        <domain includeSubdomains="true">linkftp.com</domain>
+        <domain includeSubdomains="true">tajpata.com</domain>
+        <domain includeSubdomains="true">mazedanetworks.net</domain>
+        <domain includeSubdomains="true">sunplex.net</domain>
+        <domain includeSubdomains="true">moviemela.live</domain>
+        <domain includeSubdomains="true">dhakaftp.com</domain>
+        <domain includeSubdomains="true">freedownloadbd.com</domain>
+        <domain includeSubdomains="true">dfnbd.net</domain>
+        <domain includeSubdomains="true">candybd.net</domain>
+        <domain includeSubdomains="true">mcnbd.com</domain>
+        <domain includeSubdomains="true">pollyflix.com</domain>
+        <domain includeSubdomains="true">timenai.com</domain>
+        <domain includeSubdomains="true">dnetdrive.com</domain>
+        <domain includeSubdomains="true">rangdhanu.live</domain>
+        <domain includeSubdomains="true">moviedom.live</domain>
+        <domain includeSubdomains="true">moviehaat.net</domain>
+        <domain includeSubdomains="true">dflix.live</domain>
+        <domain includeSubdomains="true">moviemaja.net</domain>
+        <domain includeSubdomains="true">ibdplex.net</domain>
+        <domain includeSubdomains="true">flixhub.net</domain>
+        <domain includeSubdomains="true">abcmoviesbd.com</domain>
+        <domain includeSubdomains="true">ctgoz.com</domain>
+        <domain includeSubdomains="true">smiledotnet.xyz</domain>
+        <domain includeSubdomains="true">alphamediazone.com</domain>
+        <domain includeSubdomains="true">asianftp.com</domain>
+        <domain includeSubdomains="true">binodonmela.net</domain>
+        <domain includeSubdomains="true">akkadukka.com</domain>
+        <domain includeSubdomains="true">aktube.live</domain>
+        <domain includeSubdomains="true">bossbd.live</domain>
+        <domain includeSubdomains="true">cinemabazar.net</domain>
         <domain includeSubdomains="true">khulnaplex.net</domain>
+        <domain includeSubdomains="true">evonetbd.com</domain>
+        <domain includeSubdomains="true">plexbd.net</domain>
+        <domain includeSubdomains="true">ctgflix.com</domain>
+        <domain includeSubdomains="true">funtimebd.com</domain>
+        <domain includeSubdomains="true">fastplex.net</domain>
+        <domain includeSubdomains="true">s-flix.live</domain>
+        <domain includeSubdomains="true">hasikhushi.net</domain>
+        <domain includeSubdomains="true">halum.net</domain>
+        <domain includeSubdomains="true">iboxbd.online</domain>
+        <domain includeSubdomains="true">kloud.com.bd</domain>
+        <domain includeSubdomains="true">mymoviebazar.net</domain>
+        <domain includeSubdomains="true">movieboxbd.com</domain>
+        <domain includeSubdomains="true">midiplex.net</domain>
+        <domain includeSubdomains="true">mlwbd.mobi</domain>
+        <domain includeSubdomains="true">nbox.live</domain>
+        <domain includeSubdomains="true">jhakkas.live</domain>
+        <domain includeSubdomains="true">cinemacity.live</domain>
+        <domain includeSubdomains="true">starplexbd.com</domain>
     </domain-config>
 </network-security-config>
